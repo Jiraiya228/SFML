@@ -1,30 +1,36 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "Game.h"
+#include "Entity.h"
+#include "Player.h"
 
 
-int main()
-{
-   // Init game engine
-    Game game();
+#define WINDOW_WIDTH 800
+#define WINDOW_HEIGHT 600
 
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+int main() {
+    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Bouncing Ball with Chipmunk2D");
+    window.setFramerateLimit(60);
 
-    //game loop
-        while (window.isOpen())
-    {
+
+    Player player;
+
+
+
+
+    while (window.isOpen()) {
         sf::Event event;
-        while (window.pollEvent(event))
-        {
+        while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
         }
 
-        window.clear();
-        window.draw(shape);
+        player.update();
+
+        window.clear(sf::Color::Black);
+        player.draw(window);
         window.display();
     }
+
 
     return 0;
 }
