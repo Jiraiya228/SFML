@@ -1,6 +1,5 @@
 #include "Player.h"
 #include <cmath>
-#include <SFML/Graphics.hpp>
 
 Player::Player()
 {
@@ -10,7 +9,6 @@ Player::Player()
 Player::~Player()
 {
 }
-
 
 void Player::initialize()
 {
@@ -28,7 +26,6 @@ void Player::initialize()
 	cameraHitbox.setFillColor(sf::Color::Transparent);
 	cameraHitbox.setOutlineColor(sf::Color::Magenta);
 	cameraHitbox.setOutlineThickness(2);
-
 }
 
 void Player::move(Map& map)
@@ -72,7 +69,6 @@ void Player::move(Map& map)
 
 }
 
-
 void Player::collisions(Map& map)
 {
 	sf::FloatRect playerRect = hitbox.getGlobalBounds();
@@ -82,7 +78,6 @@ void Player::collisions(Map& map)
 	downCollision = false;
 	leftCollision = false;
 	rightCollision = false;
-
 
 	// X
 	for (const auto& mapHitbox : map.mapHitbox)
@@ -109,7 +104,6 @@ void Player::collisions(Map& map)
 		}
 	}
 
-
 	// Y
 	// Обновляем playerRect после горизонтальной коррекции
 	playerRect = hitbox.getGlobalBounds();
@@ -135,13 +129,6 @@ void Player::collisions(Map& map)
 			}
 		}
 	}
-
-}
-
-// проверка взаимодействия с триггером
-bool Player::isInteractingWith(const sf::FloatRect& triggerZone) const
-{
-	return getGlobalBounds().intersects(triggerZone);
 }
 
 
@@ -158,17 +145,6 @@ void Player::draw(sf::RenderWindow& window)
 	window.draw(hitbox);
 	window.setView(view);
 }
-
-sf::FloatRect Player::getGlobalBounds() const
-{
-	return mSprite.getGlobalBounds();
-}
-
-sf::Vector2f Player::getPosition() const
-{
-	return sf::Vector2f();
-}
-
 
 sf::View Player::camera(sf::View view)
 {

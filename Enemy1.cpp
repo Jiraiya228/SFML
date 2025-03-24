@@ -209,34 +209,3 @@ void Enemy1::draw(sf::RenderWindow& window)
 	window.draw(view);
 	window.draw(collisionChecker);
 }
-
-
-// метод установки цели и обновления позиции
-void Enemy1::setTargetPosition(const sf::Vector2f& position)
-{
-	targetPosition = position;
-	movingToTarget = true;
-}
-
-void Enemy1::update()
-{
-	if (movingToTarget)
-	{
-		sf::Vector2f direction = targetPosition - getPosition();
-		float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
-		if (length > 1.f)
-		{
-			direction /= length;
-			mSprite.move(direction * speed);
-		}
-		else
-		{
-			movingToTarget = false;
-		}
-	}
-}
-
-sf::Vector2f Enemy1::getPosition() const
-{
-	return mSprite.getPosition();
-}

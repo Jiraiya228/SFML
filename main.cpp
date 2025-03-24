@@ -6,7 +6,6 @@
 #include "Enemy1.h"
 #include "Map.h"
 
-
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 360
 
@@ -14,7 +13,7 @@ int main() {
 	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Bouncing Ball with Chipmunk2D");
 	window.setFramerateLimit(60);
 
-	sf::Clock clockForSpawn; // ������ ��� �������� ������
+	sf::Clock clockForSpawn; // òàéìåð äëÿ ñîçäàíèÿ âðàãîâ
 
 	Player player;
 	Map map;
@@ -27,20 +26,9 @@ int main() {
 	}
 
 
-	// �������� ������ ������
-	const float spawnInterval = 2.0f; // �������� ������ ������ � ��������
-	clockForSpawn.restart(); // ������ ������� ������
-
-	std::vector<Enemy1> enemies; // Контейнер с врагами
-	enemies.emplace_back(); // Добавление нового объекта в вектор
-	enemies.back().setPosition(500.f, 300.f); // Доступ к последнему элементу и установка позиции
-
-	enemies.emplace_back().setPosition(700.f, 400.f);
-
-	// Определение зоны триггера (например, дверь или ключ)
-	sf::FloatRect triggerZone(100.f, 100.f, 50.f, 50.f);
-	bool triggerActivated = false;
-	sf::Vector2f triggerPosition;
+	// èíòåðâàë ñïàâíà âðàãîâ
+	const float spawnInterval = 2.0f; // èíòåðâàë ñïàâíà âðàãîâ â ñåêóíäàõ
+	clockForSpawn.restart(); // Çàïóñê òàéìåðà ñïàâíà
 
 	while (window.isOpen()) {
 		sf::Event event;
@@ -49,40 +37,14 @@ int main() {
 				window.close();
 		}
 
-		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::E)
-		{
-			if (player.isInteractingWith(triggerZone))
-			{
-				triggerActivated = true;
-				triggerPosition = player.getPosition();
-			}
-		}
-	
-
-		static int enemyCount = 0; // ������ ��������� ������
+		static int enemyCount = 0; // ïðåäåë îáðàáîòêè âðàãîâ
 
 		if (clockForSpawn.getElapsedTime().asSeconds() >= spawnInterval && enemyCount < enemyVector.size())
 		{
 			clockForSpawn.restart();
-			// 			if (enemyVector[enemyCount].getEnemyIsDead()) // �������� �����, ���� �� ����
+			// 			if (enemyVector[enemyCount].getEnemyIsDead()) // óäàëåíèå âðàãà, åñëè îí óìåð
 			// 				enemyVector.erase(enemyVector.begin() + enemyCount);
-			enemyCount++; // ���� ������ ��������, �� ������ ���� ����
-		}
-
-		// Логика перемещения врагов
-		if (triggerActivated)
-		{
-			for (Enemy1& enemy : enemies)
-			{
-				if (enemy.getPosition().x > triggerPosition.x - 200 &&
-					enemy.getPosition().x < triggerPosition.x + 200 &&
-					enemy.getPosition().y > triggerPosition.y - 200 &&
-					enemy.getPosition().y < triggerPosition.y + 200)
-				{
-					enemy.setTargetPosition(triggerPosition);
-				}
-			}
-			triggerActivated = false;
+			enemyCount++; // åñëè òàéìåð ñðàáîòàë, òî ïðåäåë ñòàë âûøå
 		}
 
 		player.update(map);
@@ -104,12 +66,6 @@ int main() {
 		}
 		map.drawFirstLayer(window);
 		window.display();
-
-		// Отрисовка триггера (для теста, потом можно убрать)
-		sf::RectangleShape triggerShape(sf::Vector2f(triggerZone.width, triggerZone.height));
-		triggerShape.setPosition(triggerZone.left, triggerZone.top);
-		triggerShape.setFillColor(sf::Color(255, 0, 0, 100)); // Полупрозрачный красный
-		window.draw(triggerShape);
 	}
 	return 0;
 }
